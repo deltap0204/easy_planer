@@ -1,0 +1,32 @@
+{
+    "name": "Create Quality Issue FVD",
+    "description": "Create an issue for Quality as it should be created",
+    "key": "be.frict.createQualityIssue",
+    "baseUrl": "https://f4b0b73576f7.ngrok.io/",
+    "vendor": {
+        "name": "FrICT",
+        "url": "http://otmgroup.be"
+    },
+    "authentication": {
+        "type": "jwt"
+    },
+    "lifecycle": {
+        "installed": "/installed"
+    },
+    "scopes": [
+        "READ", "WRITE"
+    ],
+    "apiVersion": 1,
+    "modules": {
+        "generalPages": [
+            {
+                "url": "/helloworld.html",
+                "key": "hello-world",
+                "location": "system.top.navigation.bar",
+                "name": {
+                    "value": "Create Quality Issue"
+                }
+            }
+        ]
+    }
+}
