@@ -2,7 +2,7 @@
      "name": "Hello World",
      "description": "Atlassian Connect app",
      "key": "com.example.myapp",
-     "baseUrl": "https://<placeholder-url>",
+     "baseUrl": "http://6df594733c45.ngrok.io",
      "vendor": {
          "name": "Example, Inc.",
          "url": "http://example.com"
@@ -14,7 +14,7 @@
      "modules": {
          "generalPages": [
              {
-                 "url": "/helloworld.html",
+                 "url": "/users",
                  "key": "hello-world",
                  "location": "system.top.navigation.bar",
                  "name": {
