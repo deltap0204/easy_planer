@@ -5,41 +5,7 @@
         <script src="https://connect-cdn.atl-paas.net/all.js" async></script>
         <script src="./frict_jira.js" async></script>
     </head>
-    <body>
-        <section id="content" class="ac-content">
-            <h1>Create a new issue for Quality 5</h1>
-            <form action="">
-                <label for="fname">First name:</label>
-                <input type="text" id="fname" name="fname"><br><br>
-                <label for="lname">Last name:</label>
-                <input type="text" id="lname" name="lname"><br><br>
-                <button onclick="myFunction()">Create</button>
-            </form>
-            <p>
-            <label for="summary">Summary - Résumé :</label><br>
-            <input type="text" id="summary" name="summary" size="50"><br><br>
-            <label for="customer">Customer :</label><br>
-            <input type="text" id="customer" name="customer" size="50"><br><br>
-            <label for="so">Item and/or SO and/or OF</label><br>
-            <input type="text" id="so" name="so" size="50"><br><br>
-            <label for="description">Problem description</label><br>
-            <input type="textarea" id="description" name="description"><br><br>
-            <label for="replacement">Replacement of NOK parts required? Quantity? Lead time?</label><br>
-            <textarea id="replacement" name="replacement" rows="10" cols="50" ></textarea><br><br>
-            <label for="feedback">Feedback required from Quality </label><br>
-            <select id="feedback" name="feedback" >
-                <option value="volvo">No feedback needed, just register my claim</option>
-                <option value="saab">Send me a brief conclusion by mail</option>
-                <option value="fiat">Send me an internal report with analysis</option>
-                <option value="audi">Send me a formal report as required by the customer( 8D,5Why,…) </option>
-              </select><br/><br>
-            <label for="category">Category of claim  </label><br>
-            <select id="category" name="category"  >
-                <option value="volvo">customer claim</option>
-                <option value="saab">internal non conformity</option>
-                <option value="fiat">supplier claim</option>
-              </select>
-
-        </section>
+    <body id="body">
+       <script>myFunction()</script> 
     </body>
 </html>

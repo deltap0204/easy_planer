@@ -1,8 +1,8 @@
 {
-    "name": "Create Quality Issue FVD",
+    "name": "Create Quality Issue Frict",
     "description": "Create an issue for Quality as it should be created",
     "key": "be.frict.createQualityIssue",
-    "baseUrl": "https://f4b0b73576f7.ngrok.io/",
+    "baseUrl": "https://d5e51f8db5cc.ngrok.io",
     "vendor": {
         "name": "FrICT",
         "url": "http://otmgroup.be"
@@ -21,7 +21,7 @@
         "generalPages": [
             {
                 "url": "/helloworld.html",
-                "key": "hello-world",
+                "key": "jira",
                 "location": "system.top.navigation.bar",
                 "name": {
                     "value": "Create Quality Issue"

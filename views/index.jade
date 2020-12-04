@@ -1,6 +1,7 @@
 extends layout
 
 block content
+  #{tasks.length}
   #wrapper
     .cen-i-top
       .cmp-hdr-lne
@@ -47,152 +48,33 @@ block content
           h2
             span unplanned
         #external-events-list
-          .fc-event.fc-h-event.fc-daygrid-event.fc-daygrid-block-event
-            .fc-event-main
-              .ctl-com-blo
-                .ctl-des-top
-                  p Main order flow broken
-                .ctl-tit-bot
-                  .ctl-tit-lft
-                    .ctl-chk-lft
-                      label(for='drop-remove')
-                      input#drop-remove(type='checkbox')
-                    .ctl-txt-rit
-                      span T2-1
+          each task in tasks
+            .fc-event.fc-h-event.fc-daygrid-event.fc-daygrid-block-event
+              .fc-event-main
+                .ctl-com-blo
+                  .ctl-des-top
+                    p Main order flow broken
+                  .ctl-tit-bot
+                    .ctl-tit-lft
+                      .ctl-chk-lft
+                        label(for='drop-remove')
+                        input#drop-remove(type='checkbox')
+                      .ctl-txt-rit
+                        span #{task.key}
+                      .clearfix
+                    .ctl-dur-rit
+                      .ctl-dur-hor
+                        h3 Duration: 1h 45m
+                      .ctl-dur-dat
+                        span Start: 20/11/09 T 8:00
+                      .clearfix
                     .clearfix
-                  .ctl-dur-rit
-                    .ctl-dur-hor
-                      h3 Duration: 1h 45m
-                    .ctl-dur-dat
-                      span Start: 20/11/09 T 8:00
-                    .clearfix
+                  .ctl-usr-ovr
+                    ul.ctl-flx-usr
+                      li
+                        a(href='#!')
+                          span.ctl-usr-bck FD
                   .clearfix
-                .ctl-usr-ovr
-                  ul.ctl-flx-usr
-                    li
-                      a(href='#!')
-                        span.ctl-usr-bck FD
-                .clearfix
-          .fc-event.fc-h-event.fc-daygrid-event.fc-daygrid-block-event
-            .fc-event-main
-              .ctl-com-blo
-                .ctl-des-top
-                  p Main order flow broken
-                .ctl-tit-bot
-                  .ctl-tit-lft
-                    .ctl-chk-lft
-                      label(for='drop-remove')
-                      input#drop-remove(type='checkbox')
-                    .ctl-txt-rit
-                      span T2-1
-                    .clearfix
-                  .ctl-dur-rit
-                    .ctl-dur-hor
-                      h3 Duration: 1h 45m
-                    .ctl-dur-dat
-                      span Start: 20/11/09 T 8:00
-                    .clearfix
-                  .clearfix
-                .ctl-usr-ovr
-                  ul.ctl-flx-usr
-                    li
-                      a(href='#!')
-                        span.ctl-usr-bck FD
-                .clearfix
-          .fc-event.fc-h-event.fc-daygrid-event.fc-daygrid-block-event
-            .fc-event-main
-              .ctl-com-blo
-                .ctl-des-top
-                  p Main order flow broken
-                .ctl-tit-bot
-                  .ctl-tit-lft
-                    .ctl-chk-lft
-                      label(for='drop-remove')
-                      input#drop-remove(type='checkbox')
-                    .ctl-txt-rit
-                      span T2-1
-                    .clearfix
-                  .ctl-dur-rit
-                    .ctl-dur-hor
-                      h3 Duration: 1h 45m
-                    .ctl-dur-dat
-                      span Start: 20/11/09 T 8:00
-                    .clearfix
-                  .clearfix
-                .clearfix
-          .fc-event.fc-h-event.fc-daygrid-event.fc-daygrid-block-event
-            .fc-event-main
-              .ctl-com-blo
-                .ctl-des-top
-                  p Main order flow broken
-                .ctl-tit-bot
-                  .ctl-tit-lft
-                    .ctl-chk-lft
-                      label(for='drop-remove')
-                      input#drop-remove(type='checkbox')
-                    .ctl-txt-rit
-                      span T2-1
-                    .clearfix
-                  .ctl-dur-rit
-                    .ctl-dur-hor
-                      h3 Duration: 1h 45m
-                    .ctl-dur-dat
-                      span Start: 20/11/09 T 8:00
-                    .clearfix
-                  .clearfix
-                .clearfix
-          .fc-event.fc-h-event.fc-daygrid-event.fc-daygrid-block-event
-            .fc-event-main
-              .ctl-com-blo
-                .ctl-des-top
-                  p Main order flow broken
-                .ctl-tit-bot
-                  .ctl-tit-lft
-                    .ctl-chk-lft
-                      label(for='drop-remove')
-                      input#drop-remove(type='checkbox')
-                    .ctl-txt-rit
-                      span T2-1
-                    .clearfix
-                  .ctl-dur-rit
-                    .ctl-dur-hor
-                      h3 Duration: 1h 45m
-                    .ctl-dur-dat
-                      span Start: 20/11/09 T 8:00
-                    .clearfix
-                  .clearfix
-                .ctl-usr-ovr
-                  ul.ctl-flx-usr
-                    li
-                      a(href='#!')
-                        span.ctl-usr-bck FD
-                .clearfix
-          .fc-event.fc-h-event.fc-daygrid-event.fc-daygrid-block-event
-            .fc-event-main
-              .ctl-com-blo
-                .ctl-des-top
-                  p Main order flow broken
-                .ctl-tit-bot
-                  .ctl-tit-lft
-                    .ctl-chk-lft
-                      label(for='drop-remove')
-                      input#drop-remove(type='checkbox')
-                    .ctl-txt-rit
-                      span T2-1
-                    .clearfix
-                  .ctl-dur-rit
-                    .ctl-dur-hor
-                      h3 Duration: 1h 45m
-                    .ctl-dur-dat
-                      span Start: 20/11/09 T 8:00
-                    .clearfix
-                  .clearfix
-                .ctl-usr-ovr
-                  ul.ctl-flx-usr
-                    li
-                      a(href='#!')
-                        span.ctl-usr-bck FD
-                .clearfix
         .clearall
       #calendar-wrap
         #calendar

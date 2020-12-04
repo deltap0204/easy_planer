@@ -1,14 +1,22 @@
 
-function myFunction(){
-    console.log("SUBMITTING THE FOLLOWING");
-    console.log("First name : " + document.getElementById("fname").value);
-    console.log("Last name : " + document.getElementById("lname").value);
+
+    
 
     // var myHeaders = new Headers();
     // myHeaders.append("Authorization", "Basic ZnJhbmtAZnJpY3QuYmU6RXBKc0xxU1dlMG5KRnBuenduMHIwM0Iw");
     // myHeaders.append("Content-Type", "application/json");
-    
-    var raw = JSON.stringify({"fields":{"summary":"Main order flow broken","project":{"id":"10001"},"issuetype":{"id":"10005"},"description":{"type":"doc","version":1,"content":[{"type":"paragraph","content":[{"text":"Order entry fails when selecting supplier.","type":"text"}]}]}}});
+    who = 'OTM'
+    var myQuery = 'project = WT';
+    if (!who || typeof who == 'undefined') {
+        console.log("No customer defined yet.  Not allowing anything!");
+        myQuery += ' and customer ~ \'' + randomstring.generate(); + '\'';
+    } else
+        if (who != 'OTM') {
+            myQuery += ' and customer ~ \'' + who + '\'';
+  }
+    var raw = JSON.stringify({"fields":['summary', 'attachment', 'status', 'resolutiondate', 'customfield_10079', 'customfield_10060', 'customfield_10061', 'customfield_10062', 'customfield_10063', 'customfield_10065', 'customfield_10056', 'customfield_10057','customfield_10059','customfield_10175','customfield_10178','customfield_10179','customfield_10180','customfield_10181','customfield_10182','customfield_10058'],
+    startAt: 0,
+    maxResults: 25});
     
     // var requestOptions = {
     //   method: 'POST',
@@ -30,16 +38,15 @@ function myFunction(){
 
     AP.require('request', function(request){
         request({
-          url: '/rest/api/3/issue',
+          url: '/rest/api/3/search',
           type: 'POST',
           data: raw,
           contentType: 'application/json',
           success: function(responseText){
-            console.log();console.log();console.log();console.log();console.log();console.log();console.log();
+            document.getElementById('body').innerHTML = responseText
             console.log(responseText);
           },
           error: function(xhr, statusText, errorThrown){
-            console.log();console.log();console.log();console.log();console.log();console.log();console.log();
             console.log(arguments);
           }
         });
@@ -53,4 +60,3 @@ function myFunction(){
 
 
 
-}
