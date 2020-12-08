@@ -1,6 +1,6 @@
 
 
-    
+    var issuesToAssign = [];
 
     // var myHeaders = new Headers();
     // myHeaders.append("Authorization", "Basic ZnJhbmtAZnJpY3QuYmU6RXBKc0xxU1dlMG5KRnBuenduMHIwM0Iw");
@@ -50,8 +50,12 @@
           
           contentType: 'application/json',
           success: function(responseText){
-            // document.getElementById('body').innerHTML = responseText
-           console.log(JSON.parse(responseText))
+           let users = JSON.parse(responseText);
+           let userHTML = '';
+           users.forEach(user=>{
+            userHTML += `<li><a href="javascript:void(0)" onClick="assignUser(this)" data-accountID = "${user.accountId}"><span class="ctl-usr-bck" title="${user.displayName}">${user.displayName.charAt(0)}${user.displayName.charAt(1)}</span></a></li>`
+           })
+           document.getElementById('userHTML').innerHTML = userHTML
           },
           error: function(xhr, statusText, errorThrown){
             console.log(arguments);
@@ -93,6 +97,14 @@
             let {issues} = response;
             let html = '';
             issues.forEach(element => {
+              let assignee = '';
+              if(element.fields.assignee){
+                assignee = ` <div class="ctl-usr-ovr">
+                <ul class="ctl-flx-usr">
+                    <li><a href="#!"><span class="ctl-usr-bck">${element.fields.assignee.displayName}</span></a></li>
+                </ul>
+            </div>`
+              }
               html = `${html}<div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event">
               <div class="fc-event-main">
                   <div class="ctl-com-blo">
@@ -102,7 +114,7 @@
                       <div class="ctl-tit-bot">
                           <div class="ctl-tit-lft">
                               <div class="ctl-chk-lft">
-                                  <label for="drop-remove"></label> <input type="checkbox" id="drop-remove"/>
+                                  <label for="drop-remove"></label> <input type="checkbox" onClick="addIssue(this)" data-issueID="${element.id}" id="drop-remove"/>
                               </div>
                               <div class="ctl-txt-rit">
                                   <span>${element.key}</span>
@@ -120,11 +132,7 @@
                           </div>
                           <div class="clearfix"></div>
                       </div>
-                      <div class="ctl-usr-ovr">
-                          <ul class="ctl-flx-usr">
-                              <li><a href="#!"><span class="ctl-usr-bck">FD</span></a></li>
-                          </ul>
-                      </div>
+                     ${assignee}
                       <div class="clearfix"></div>
                   </div>
               </div>
@@ -141,6 +149,51 @@
 
 
     });
+
+
+    function addIssue(element){
+      let issueID = element.getAttribute('data-issueID')
+      if(element.checked){
+        issuesToAssign = [...issuesToAssign,issueID]
+      }
+      else{
+        let index = issuesToAssign.indexOf(issueID);
+        if (index > -1) {
+          issuesToAssign.splice(index, 1);
+        }
+      }
+      console.log(issuesToAssign)
+      
+    }
+
+
+    function assignUser(element){
+      let accountID = element.getAttribute('data-accountID');
+      if(issuesToAssign.length>0){
+        AP.require('request', function(request){
+        issuesToAssign.forEach(issue=>{
+
+          request({
+            url: `/rest/api/issue/${issue}/assignee`,
+            type: 'PUT',
+            data: JSON.stringify({"accountId": accountID}),
+            contentType: 'application/json',
+            success: function(responseText){
+              console.log(responseText)
+              
+            },
+            error: function(xhr, statusText, errorThrown){
+              console.log(arguments);
+            }
+          });
+        })
+      })
+      }
+      else{
+        alert('No issue selected')
+      }
+
+    }
 
 
 
