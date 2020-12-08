@@ -1,6 +1,6 @@
 
 document.addEventListener('DOMContentLoaded', function() {
-
+//
     /* initialize the external events
     -----------------------------------------------------------------*/
 
