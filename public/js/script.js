@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // if so, remove the element from the "Draggable Events" list
                 arg.draggedEl.parentNode.removeChild(arg.draggedEl);
             }
-            console.log(arg)
+            
         }
     });
     calendar.render();
