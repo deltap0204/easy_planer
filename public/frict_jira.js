@@ -170,24 +170,30 @@
     function assignUser(element){
       let accountID = element.getAttribute('data-accountID');
       if(issuesToAssign.length>0){
+        AP.context.getToken(function(token){
+          console.log("JWT token string", token);
+        
         AP.require('request', function(request){
         issuesToAssign.forEach(issue=>{
 
           request({
-            url: `/rest/api/issue/${issue}/assignee`,
+            url: `/rest/api/3/issue/${issue}/assignee`,
             type: 'PUT',
+           
+            
             data: JSON.stringify({"accountId": accountID}),
             contentType: 'application/json',
             success: function(responseText){
-              console.log(responseText)
+              getissues()
               
             },
             error: function(xhr, statusText, errorThrown){
-              console.log(arguments);
+              console.log(errorThrown);
             }
           });
         })
       })
+    });
       }
       else{
         alert('No issue selected')
@@ -195,6 +201,70 @@
 
     }
 
+
+    function getissues(){
+      AP.require('request', function(request){
+      request({
+        url: '/rest/api/3/search',
+        type: 'POST',
+        data: raw,
+        contentType: 'application/json',
+        success: function(responseText){
+          issuesToAssign = []
+          // document.getElementById('body').innerHTML = responseText
+          response = JSON.parse(responseText)
+          let {issues} = response;
+          let html = '';
+          issues.forEach(element => {
+            let assignee = '';
+            if(element.fields.assignee){
+              assignee = ` <div class="ctl-usr-ovr">
+              <ul class="ctl-flx-usr">
+                  <li><a href="#!"><span class="ctl-usr-bck">${element.fields.assignee.displayName}</span></a></li>
+              </ul>
+          </div>`
+            }
+            html = `${html}<div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event">
+            <div class="fc-event-main">
+                <div class="ctl-com-blo">
+                    <div class="ctl-des-top">
+                        <p>${element.fields.summary}</p>
+                    </div>
+                    <div class="ctl-tit-bot">
+                        <div class="ctl-tit-lft">
+                            <div class="ctl-chk-lft">
+                                <label for="drop-remove"></label> <input type="checkbox" onClick="addIssue(this)" data-issueID="${element.id}" id="drop-remove"/>
+                            </div>
+                            <div class="ctl-txt-rit">
+                                <span>${element.key}</span>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="ctl-dur-rit">
+                            <div class="ctl-dur-hor">
+                                <h3>Duration: 1h 45m</h3>
+                            </div>
+                            <div class="ctl-dur-dat">
+                                <span>Start: 20/11/09 T 8:00</span>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                   ${assignee}
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>`;
+          });
+          document.getElementById('external-events-list').innerHTML = html
+        },
+        error: function(xhr, statusText, errorThrown){
+          console.log(arguments);
+        }
+      });
+    })
+    }
 
 
 
