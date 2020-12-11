@@ -43,7 +43,7 @@
       }
         var raw = JSON.stringify({fields:['summary', 'attachment', 'status', 'resolutiondate','assignee', 'customfield_10079', 'customfield_10060', 'customfield_10061', 'customfield_10062', 'customfield_10063', 'customfield_10065', 'customfield_10056', 'customfield_10057','customfield_10059','customfield_10175','customfield_10178','customfield_10179','customfield_10180','customfield_10181','customfield_10182','customfield_10058'],
         startAt: 0,
-        maxResults: 25,"jql": "project ="+projectKey,});
+        maxResults: 25,jql: "project ="+projectKey});
         
         request({
           url: `/rest/api/3/user/assignable/multiProjectSearch?projectKeys=${projectKey}`,
@@ -88,7 +88,7 @@
 
 
         request({
-          url: '/rest/api/3/search?project='+projectKey,
+          url: '/rest/api/3/search',
           type: 'POST',
           data: raw,
           contentType: 'application/json',
@@ -220,7 +220,7 @@
     }
       var raw = JSON.stringify({fields:['summary', 'attachment', 'status', 'resolutiondate','assignee', 'customfield_10079', 'customfield_10060', 'customfield_10061', 'customfield_10062', 'customfield_10063', 'customfield_10065', 'customfield_10056', 'customfield_10057','customfield_10059','customfield_10175','customfield_10178','customfield_10179','customfield_10180','customfield_10181','customfield_10182','customfield_10058'],
       startAt: 0,
-      maxResults: 25,"jql": "project ="+projectKey,});
+      maxResults: 25,jql: "project ="+projectKey});
     AP.require('request', function(request){
     request({
       url: '/rest/api/3/search',
