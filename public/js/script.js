@@ -41,7 +41,22 @@ document.addEventListener('DOMContentLoaded', function() {
             eventDurationEditable:true,
             drop: function(arg) {
                
-  
+                AP.require('request', function(request){
+                    request({
+                        url: `/rest/api/3/user/assignable/multiProjectSearch?projectKeys=${projectKey}`,
+                        type: 'GET',
+                        
+                        contentType: 'application/json',
+                        success: function(responseText){
+                        console.log(responseText)
+                        },
+                        error: function(xhr, statusText, errorThrown){
+                          console.log(arguments);
+                        }
+                      
+                    });
+              
+                })
                     arg.draggedEl.parentNode.removeChild(arg.draggedEl);
                     console.log(arg)
                
