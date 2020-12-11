@@ -40,12 +40,13 @@ document.addEventListener('DOMContentLoaded', function() {
             droppable: true, // this allows things to be dropped onto the calendar
             eventDurationEditable:true,
             drop: function(arg) {
-               
+               //customfield_10033
+               var issueKey = arg.draggedEl.getAttribute('data-key'); 
                 AP.require('request', function(request){
                     request({
-                        url: `/rest/api/3/user/assignable/multiProjectSearch?projectKeys=${projectKey}`,
-                        type: 'GET',
-                        
+                        url: `/rest/api/3/issue/${issueKey}/properties/customfield_10033'`,
+                        type: 'PUT',
+                        data: JSON.stringify({"customfield_10033": '2020-12-12'}),
                         contentType: 'application/json',
                         success: function(responseText){
                         console.log(responseText)

@@ -106,7 +106,7 @@
                 </ul>
             </div>`
               }
-              html = `${html}<div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event" data-key="${element.key}">
+              html = `${html}<div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event" data-key="${element.id}">
               <div class="fc-event-main">
                   <div class="ctl-com-blo">
                       <div class="ctl-des-top">
@@ -242,7 +242,7 @@
             </ul>
         </div>`
           }
-          html = `${html}<div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event" data-key="${element.key}">
+          html = `${html}<div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event" data-key="${element.id}">
           <div class="fc-event-main">
               <div class="ctl-com-blo">
                   <div class="ctl-des-top">
