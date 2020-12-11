@@ -42,11 +42,18 @@ document.addEventListener('DOMContentLoaded', function() {
             drop: function(arg) {
                //customfield_10033
                var issueKey = arg.draggedEl.getAttribute('data-key'); 
+               let json = JSON.stringify({
+               
+                "fields": {
+                    "customfield_10033": '2020-12-12'
+                  
+                }
+              })
                 AP.require('request', function(request){
                     request({
-                        url: `/rest/api/3/issue/${issueKey}/properties/customfield_10033'`,
+                        url: `/rest/api/3/issue/${issueKey}`,
                         type: 'PUT',
-                        data: JSON.stringify({"customfield_10033": '2020-12-12'}),
+                        data:json,
                         contentType: 'application/json',
                         success: function(responseText){
                         console.log(responseText)
