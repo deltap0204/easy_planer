@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
               
                 })
                     arg.draggedEl.parentNode.removeChild(arg.draggedEl);
-                    console.log(arg)
+                    console.log(arg.draggedEl.getAttribute('data-key'))
                
                 
             }
