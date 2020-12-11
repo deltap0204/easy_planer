@@ -263,7 +263,7 @@
                               <h3>Duration: 1h 45m</h3>
                           </div>
                           <div class="ctl-dur-dat">
-                              <span>Start: 20/11/09 T 8:00</span>
+                              <span>Start: ${element.fields.customfield_10033}</span>
                           </div>
                           <div class="clearfix"></div>
                       </div>
