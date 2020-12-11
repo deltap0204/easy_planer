@@ -332,7 +332,7 @@ document.addEventListener('DOMContentLoaded', function() {
              
 
                   arg.draggedEl.parentNode.removeChild(arg.draggedEl);
-                  console.log(arg.draggedEl)
+                  console.log(arg)
              
               
           }
