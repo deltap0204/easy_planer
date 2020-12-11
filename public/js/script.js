@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
                let json = JSON.stringify({
                
                 "fields": {
-                    "customfield_10033": '2020-12-12'
+                    "customfield_10033": arg.dateStr
                   
                 }
               })
