@@ -329,14 +329,11 @@ document.addEventListener('DOMContentLoaded', function() {
           droppable: true, // this allows things to be dropped onto the calendar
           eventDurationEditable:true,
           drop: function(arg) {
-              // is the "remove after drop" checkbox checked?
-              if (document.getElementById('drop-remove').checked) {
-                  // if so, remove the element from the "Draggable Events" list
+             
+
                   arg.draggedEl.parentNode.removeChild(arg.draggedEl);
-              }
-              else{
-                  return false;
-              }
+                  console.log(arg.draggedEl)
+             
               
           }
       });
