@@ -178,8 +178,8 @@ document.addEventListener('DOMContentLoaded', function() {
               }
 
             });
-            callb(eventsArray)
             document.getElementById('external-events-list').innerHTML = html
+            callb(eventsArray)
           },
           error: function(xhr, statusText, errorThrown){
             console.log(arguments);
