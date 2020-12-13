@@ -1,18 +1,18 @@
 
-let eventsArray = [
-    {
-        title  : 'event1',
-        start  : '2020-12-13T08:30:00',
-    },
-    {
-        title  : 'event2',
-        start  : '2020-12-13T08:30:00',
-    },
-    {
-        title  : 'event3',
-        start  : '2020-12-13T08:30:00',
-    }
-]
+// let eventsArray = [
+//     {
+//         title  : 'event1',
+//         start  : '2020-12-13T08:30:00',
+//     },
+//     {
+//         title  : 'event2',
+//         start  : '2020-12-13T08:30:00',
+//     },
+//     {
+//         title  : 'event3',
+//         start  : '2020-12-13T08:30:00',
+//     }
+// ]
 document.addEventListener('DOMContentLoaded', function() {
     ////
         /* initialize the external events
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
             },
             events:function(a,b,c,d){
-                b(eventsArray)
+               getissues(b)
             }
         });
         calendar.render();
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-    function getissues(){
+    function getissues(callb){
         AP.context.getContext(function(response){
           projectKey = response.jira.project.key;
           who = 'OTM'
@@ -117,12 +117,15 @@ document.addEventListener('DOMContentLoaded', function() {
           data: raw,
           contentType: 'application/json',
           success: function(responseText){
+              
             issuesToAssign = []
             // document.getElementById('body').innerHTML = responseText
             response = JSON.parse(responseText)
             let {issues} = response;
             let html = '';
+            let eventsArray = [];
             issues.forEach(element => {
+                eventsArray.push({title:element.fields.summary, start:element.fields.customfield_10033})
               let assignee = '';
               if(element.fields.assignee){
                 assignee = ` <div class="ctl-usr-ovr">
@@ -171,6 +174,7 @@ document.addEventListener('DOMContentLoaded', function() {
               </div>
           </div>`;
             });
+            callb(eventsArray)
             document.getElementById('external-events-list').innerHTML = html
           },
           error: function(xhr, statusText, errorThrown){
