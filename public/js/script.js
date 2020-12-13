@@ -1,4 +1,3 @@
-const { cookie } = require("request");
 
 let eventsArray = [
     {
