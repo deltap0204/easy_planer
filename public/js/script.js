@@ -113,6 +113,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 </ul>
             </div>`
               }
+
+              let e = "";
+              if(element.fields.customfield_10033){
+                d = new Date(element.fields.customfield_10033);
+                e += `${d.getDate()}-${d.getMonth()}-${d.getFullYear()}`;
+              }
+
               html = `${html}<div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event" data-key="${element.id}">
               <div class="fc-event-main">
                   <div class="ctl-com-blo">
@@ -134,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                   <h3>Duration: 1h 45m</h3>
                               </div>
                               <div class="ctl-dur-dat">
-                                  <span>Start: ${element.fields.customfield_10033}</span>
+                                  <span>Start: ${e}</span>
                               </div>
                               <div class="clearfix"></div>
                           </div>
