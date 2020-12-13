@@ -125,7 +125,6 @@ document.addEventListener('DOMContentLoaded', function() {
             let html = '';
             let eventsArray = [];
             issues.forEach(element => {
-                eventsArray.push({title:element.fields.summary, start:element.fields.customfield_10033})
               let assignee = '';
               if(element.fields.assignee){
                 assignee = ` <div class="ctl-usr-ovr">
@@ -137,6 +136,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
               let e = "";
               if(element.fields.customfield_10033){
+                eventsArray.push({title:element.fields.summary, start:element.fields.customfield_10033})
+
                 d = new Date(element.fields.customfield_10033);
                 e += `${d.getDate()}-${d.getMonth()}-${d.getFullYear()}`;
               }
