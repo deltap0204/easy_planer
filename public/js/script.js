@@ -1,3 +1,5 @@
+const { cookie } = require("request");
+
 let eventsArray = [
     {
         title  : 'event1',
@@ -84,8 +86,8 @@ document.addEventListener('DOMContentLoaded', function() {
                
                 
             },
-            events:function(start, end, timezone, callback ){
-                callback(eventsArray)
+            events:function( ){
+                console.log(arguments)
             }
         });
         calendar.render();
