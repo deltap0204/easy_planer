@@ -85,8 +85,8 @@ document.addEventListener('DOMContentLoaded', function() {
                
                 
             },
-            events:function(){
-                console.log(arguments)
+            events:function(a,b,c,d){
+                d(eventsArray)
             }
         });
         calendar.render();
