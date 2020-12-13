@@ -257,7 +257,7 @@
                 e += `${d.getDate()}-${d.getMonth()}-${d.getFullYear()}`;
               }
 
-
+              if(e==''){
           html = `${html}<div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event" data-key="${element.id}">
           <div class="fc-event-main">
               <div class="ctl-com-blo">
@@ -290,6 +290,7 @@
               </div>
           </div>
       </div>`;
+              }
         });
         document.getElementById('external-events-list').innerHTML = html
       },
