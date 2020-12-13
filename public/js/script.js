@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
                
                 
             },
-            events:function(){
+            events:function(start, end, timezone, callback ){
                 callback(eventsArray)
             }
         });
