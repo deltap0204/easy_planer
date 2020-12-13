@@ -21,7 +21,9 @@ document.addEventListener('DOMContentLoaded', function() {
         new FullCalendar.Draggable(containerEl, {
             itemSelector: '.fc-event',
             eventData: function(eventEl) {
-                return eventsArray
+                return {
+                    title: eventEl.innerText.trim()
+                }
             }
         });
     
@@ -81,6 +83,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     console.log(arg)
                
                 
+            },
+            events:function(){
+                callback(eventsArray)
             }
         });
         calendar.render();
