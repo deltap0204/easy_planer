@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
                
                 
             },
-            events:function( ){
+            events:function(){
                 console.log(arguments)
             }
         });
