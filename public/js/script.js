@@ -1,3 +1,17 @@
+let eventsArray = [
+    {
+        title  : 'event1',
+        start  : '2020-12-13T08:30:00',
+    },
+    {
+        title  : 'event2',
+        start  : '2020-12-13T08:30:00',
+    },
+    {
+        title  : 'event3',
+        start  : '2020-12-13T08:30:00',
+    }
+]
 document.addEventListener('DOMContentLoaded', function() {
     ////
         /* initialize the external events
@@ -7,9 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
         new FullCalendar.Draggable(containerEl, {
             itemSelector: '.fc-event',
             eventData: function(eventEl) {
-                return {
-                    title: eventEl.innerText.trim()
-                }
+                return eventsArray
             }
         });
     
