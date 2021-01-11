@@ -41,7 +41,7 @@
             if (who != 'OTM') {
                 myQuery += ' and customer ~ \'' + who + '\'';
       }
-        var raw = JSON.stringify({fields:['summary', 'attachment', 'status', 'resolutiondate','assignee', 'customfield_10033','customfield_10079', 'customfield_10060', 'customfield_10061', 'customfield_10062', 'customfield_10063', 'customfield_10065', 'customfield_10056', 'customfield_10057','customfield_10059','customfield_10175','customfield_10178','customfield_10179','customfield_10180','customfield_10181','customfield_10182','customfield_10058'],
+        var raw = JSON.stringify({fields:['summary', 'attachment', 'status', 'resolutiondate','assignee', 'customfield_10033','customfield_10079', 'customfield_10060', 'customfield_10061', 'customfield_10062', 'customfield_10063', 'customfield_10065', 'customfield_10056', 'customfield_10057','customfield_10059','customfield_10175','customfield_10178','customfield_10179','customfield_10180','customfield_10181','customfield_10182','customfield_10058','customfield_10034'],
         startAt: 0,
         maxResults: 25,jql: "project ="+projectKey});
         
@@ -107,11 +107,37 @@
             </div>`
               }
               let e = "";
+              let de = "";
+              let duration = "";
               if(element.fields.customfield_10033){
+                let end = '';
+                if(element.fields.customfield_10034){
+                    end = element.fields.customfield_10034
+    
+                    const date1 = new Date(element.fields.customfield_10033);
+                    const date2 = new Date(element.fields.customfield_10034);
+                    var seconds = Math.floor((date2 - (date1))/1000);
+var minutes = Math.floor(seconds/60);
+var hours = Math.floor(minutes/60);
+var days = Math.floor(hours/24);
+
+hours = hours-(days*24);
+minutes = minutes-(days*24*60)-(hours*60);
+seconds = seconds-(days*24*60*60)-(hours*60*60)-(minutes*60);
+duration += `${hours} h ${minutes} m`
+
+                  }
+                eventsArray.push({title:element.fields.summary, start:element.fields.customfield_10033,end:end,key:element.id})
+
                 d = new Date(element.fields.customfield_10033);
                 e += `${d.getDate()}-${d.getMonth()}-${d.getFullYear()}`;
+
+                dd = new Date(element.fields.customfield_10034);
+                de += `${dd.getDate()}-${dd.getMonth()}-${dd.getFullYear()}`;
+
               }
-              if(e==''){
+             
+               
 
                 html = `${html}<div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event" data-key="${element.id}">
                 <div class="fc-event-main">
@@ -131,7 +157,7 @@
                             </div>
                             <div class="ctl-dur-rit">
                                 <div class="ctl-dur-hor">
-                                    <h3>Duration: 1h 45m</h3>
+                                    <h3>Duration: ${duration}</h3>
                                 </div>
                                 <div class="ctl-dur-dat">
                                     <span>Start: ${e}</span>
@@ -145,7 +171,7 @@
                     </div>
                 </div>
             </div>`;
-              }
+            
             });
             document.getElementById('external-events-list').innerHTML = html
           },
@@ -257,7 +283,7 @@
                 e += `${d.getDate()}-${d.getMonth()}-${d.getFullYear()}`;
               }
 
-              if(e==''){
+        
           html = `${html}<div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event" data-key="${element.id}">
           <div class="fc-event-main">
               <div class="ctl-com-blo">
@@ -290,7 +316,7 @@
               </div>
           </div>
       </div>`;
-              }
+              
         });
         document.getElementById('external-events-list').innerHTML = html
       },

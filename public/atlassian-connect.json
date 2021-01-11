@@ -2,7 +2,7 @@
     "name": "Create Quality Issue Frict",
     "description": "Create an issue for Quality as it should be created",
     "key": "be.frict.createQualityIssue",
-    "baseUrl": "https://a13d8585909e.ngrok.io",
+    "baseUrl": "https://c2410148a11f.ngrok.io",
     "vendor": {
         "name": "FrICT",
         "url": "http://otmgroup.be"
@@ -20,7 +20,7 @@
     "modules": {
         "generalPages": [
             {
-                "url": "/helloworld.html",
+                "url": "/index.html",
                 "key": "jira",
          "location": "jira.project.sidebar.plugins.navigation",
                 "name": {

@@ -51,7 +51,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 center: 'title',
                 right: 'timeGridWeek'
             },
-            defaultView: 'agendaWeek',
+            defaultView: 'timeGridWeek',
+            initialView:"timeGridWeek",
             editable: true,
             droppable: true, // this allows things to be dropped onto the calendar
             eventDurationEditable:true,
@@ -115,7 +116,8 @@ document.addEventListener('DOMContentLoaded', function() {
                   
                     })
                 
-            }
+            },
+            
         });
         calendar.render();
     
@@ -192,7 +194,7 @@ duration += `${hours} h ${minutes} m`
                 de += `${dd.getDate()}-${dd.getMonth()}-${dd.getFullYear()}`;
 
               }
-              if(e==''){
+              
                
 
                   html = `${html}<div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event" data-key="${element.id}">
@@ -227,7 +229,7 @@ duration += `${hours} h ${minutes} m`
                       </div>
                   </div>
               </div>`;
-              }
+              
 
             });
             document.getElementById('external-events-list').innerHTML = html
