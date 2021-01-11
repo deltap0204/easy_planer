@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
             headerToolbar: {
                 left: 'prev,next today',
                 center: 'title',
-                right: 'timeGridWeek'
+                right: ''
             },
             defaultView: 'timeGridWeek',
             initialView:"timeGridWeek",
