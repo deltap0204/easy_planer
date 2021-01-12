@@ -1488,7 +1488,7 @@ A VERTICAL event
     /*left: 20px;*/
     /*top: 20px;*/
     width: 23%;
-    padding: 15px;
+    padding: 4px;
     border: 1px solid #ccc;
     background: #eee;
     text-align: left;
@@ -1504,7 +1504,7 @@ A VERTICAL event
 }
 
 #external-events .fc-event {
-    margin-bottom: 10px;
+    margin-bottom: 4px;
     cursor: move;
 }
 

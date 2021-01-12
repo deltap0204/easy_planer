@@ -215,10 +215,10 @@ duration += `${hours} h ${minutes} m`
                               </div>
                               <div class="ctl-dur-rit">
                                   <div class="ctl-dur-hor">
-                                      <h3>Duration: ${duration}</h3>
+                                      <h3></h3>
                                   </div>
                                   <div class="ctl-dur-dat">
-                                      <span>Start: ${e}</span>
+                                      <span></span>
                                   </div>
                                   <div class="clearfix"></div>
                               </div>
