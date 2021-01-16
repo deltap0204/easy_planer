@@ -1,7 +1,7 @@
 
 
     var issuesToAssign = [];
-
+   
     // var myHeaders = new Headers();
     // myHeaders.append("Authorization", "Basic ZnJhbmtAZnJpY3QuYmU6RXBKc0xxU1dlMG5KRnBuenduMHIwM0Iw");
     // myHeaders.append("Content-Type", "application/json");
@@ -99,7 +99,9 @@
             let html = '';
             issues.forEach(element => {
               let assignee = '';
+              let assigneeAccountId = "";
               if(element.fields.assignee){
+                assigneeAccountId = element.fields.assignee.accountId;
                 assignee = ` <div class="ctl-usr-ovr">
                 <ul class="ctl-flx-usr">
                 <li><a href="#!"><span class="ctl-usr-bck" title="${element.fields.assignee.displayName}">${element.fields.assignee.displayName.charAt(0)}${element.fields.assignee.displayName.charAt(1)}</span></a></li>
@@ -138,39 +140,41 @@ duration += `${hours} h ${minutes} m`
               }
              
                
+if(e==""){
 
-                html = `${html}<div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event" data-key="${element.id}">
-                <div class="fc-event-main">
-                    <div class="ctl-com-blo">
-                        <div class="ctl-des-top">
-                            <p>${element.fields.summary}</p>
-                        </div>
-                        <div class="ctl-tit-bot">
-                            <div class="ctl-tit-lft">
-                                <div class="ctl-chk-lft">
-                                    <label for="drop-remove"></label> <input type="checkbox" onClick="addIssue(this)" data-issueID="${element.id}" id="drop-remove"/>
-                                </div>
-                                <div class="ctl-txt-rit">
-                                    <span>${element.key}</span>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="ctl-dur-rit">
-                                <div class="ctl-dur-hor">
-                                    <h3>Duration: ${duration}</h3>
-                                </div>
-                                <div class="ctl-dur-dat">
-                                    <span>Start: ${e}</span>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-                       ${assignee}
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
-            </div>`;
+  html = `${html}<div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event" data-key="${element.id}" data-assignee="${assigneeAccountId}">
+  <div class="fc-event-main">
+      <div class="ctl-com-blo">
+          <div class="ctl-des-top">
+              <p>${element.fields.summary}</p>
+          </div>
+          <div class="ctl-tit-bot">
+              <div class="ctl-tit-lft">
+                  <div class="ctl-chk-lft">
+                      <label for="drop-remove"></label> <input type="checkbox" onClick="addIssue(this)" data-issueID="${element.id}" id="drop-remove"/>
+                  </div>
+                  <div class="ctl-txt-rit">
+                      <span>${element.key}</span>
+                  </div>
+                  <div class="clearfix"></div>
+              </div>
+              <div class="ctl-dur-rit">
+                  <div class="ctl-dur-hor">
+                      <h3>Duration: ${duration}</h3>
+                  </div>
+                  <div class="ctl-dur-dat">
+                      <span>Start: ${e}</span>
+                  </div>
+                  <div class="clearfix"></div>
+              </div>
+              <div class="clearfix"></div>
+          </div>
+         ${assignee}
+          <div class="clearfix"></div>
+      </div>
+  </div>
+</div>`;
+}
             
             });
             document.getElementById('external-events-list').innerHTML = html
@@ -283,39 +287,42 @@ duration += `${hours} h ${minutes} m`
                 e += `${d.getDate()}-${d.getMonth()}-${d.getFullYear()}`;
               }
 
+              if(e==''){
+
+                html = `${html}<div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event" data-key="${element.id}">
+                <div class="fc-event-main">
+                    <div class="ctl-com-blo">
+                        <div class="ctl-des-top">
+                            <p>${element.fields.summary}</p>
+                        </div>
+                        <div class="ctl-tit-bot">
+                            <div class="ctl-tit-lft">
+                                <div class="ctl-chk-lft">
+                                    <label for="drop-remove"></label> <input type="checkbox" onClick="addIssue(this)" data-issueID="${element.id}" id="drop-remove"/>
+                                </div>
+                                <div class="ctl-txt-rit">
+                                    <span>${element.key}</span>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="ctl-dur-rit">
+                                <div class="ctl-dur-hor">
+                                    <h3></h3>
+                                </div>
+                                <div class="ctl-dur-dat">
+                                    <span></span>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                       ${assignee}
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>`;
+              }
         
-          html = `${html}<div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event" data-key="${element.id}">
-          <div class="fc-event-main">
-              <div class="ctl-com-blo">
-                  <div class="ctl-des-top">
-                      <p>${element.fields.summary}</p>
-                  </div>
-                  <div class="ctl-tit-bot">
-                      <div class="ctl-tit-lft">
-                          <div class="ctl-chk-lft">
-                              <label for="drop-remove"></label> <input type="checkbox" onClick="addIssue(this)" data-issueID="${element.id}" id="drop-remove"/>
-                          </div>
-                          <div class="ctl-txt-rit">
-                              <span>${element.key}</span>
-                          </div>
-                          <div class="clearfix"></div>
-                      </div>
-                      <div class="ctl-dur-rit">
-                          <div class="ctl-dur-hor">
-                              <h3></h3>
-                          </div>
-                          <div class="ctl-dur-dat">
-                              <span></span>
-                          </div>
-                          <div class="clearfix"></div>
-                      </div>
-                      <div class="clearfix"></div>
-                  </div>
-                 ${assignee}
-                  <div class="clearfix"></div>
-              </div>
-          </div>
-      </div>`;
               
         });
         document.getElementById('external-events-list').innerHTML = html

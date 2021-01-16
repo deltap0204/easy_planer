@@ -1,18 +1,7 @@
 
-// let eventsArray = [
-//     {
-//         title  : 'event1',
-//         start  : '2020-12-13T08:30:00',
-//     },
-//     {
-//         title  : 'event2',
-//         start  : '2020-12-13T08:30:00',
-//     },
-//     {
-//         title  : 'event3',
-//         start  : '2020-12-13T08:30:00',
-//     }
-// ]
+ let eventsArray = [
+
+]
 document.addEventListener('DOMContentLoaded', function() {
     ////
         /* initialize the external events
@@ -27,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         });
+
     
         //// the individual way to do it
         // var containerEl = document.getElementById('external-events-list');
@@ -196,40 +186,43 @@ duration += `${hours} h ${minutes} m`
               }
               
                
+              if(e==""){
 
-                  html = `${html}<div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event" data-key="${element.id}">
-                  <div class="fc-event-main">
-                      <div class="ctl-com-blo">
-                          <div class="ctl-des-top">
-                              <p>${element.fields.summary}</p>
-                          </div>
-                          <div class="ctl-tit-bot">
-                              <div class="ctl-tit-lft">
-                                  <div class="ctl-chk-lft">
-                                      <label for="drop-remove"></label> <input type="checkbox" onClick="addIssue(this)" data-issueID="${element.id}" id="drop-remove"/>
-                                  </div>
-                                  <div class="ctl-txt-rit">
-                                      <span>${element.key}</span>
-                                  </div>
-                                  <div class="clearfix"></div>
-                              </div>
-                              <div class="ctl-dur-rit">
-                                  <div class="ctl-dur-hor">
-                                      <h3></h3>
-                                  </div>
-                                  <div class="ctl-dur-dat">
-                                      <span></span>
-                                  </div>
-                                  <div class="clearfix"></div>
-                              </div>
-                              <div class="clearfix"></div>
-                          </div>
-                         ${assignee}
-                          <div class="clearfix"></div>
-                      </div>
-                  </div>
-              </div>`;
-              
+                html = `${html}<div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event" data-key="${element.id}">
+                <div class="fc-event-main">
+                    <div class="ctl-com-blo">
+                        <div class="ctl-des-top">
+                            <p>${element.fields.summary}</p>
+                        </div>
+                        <div class="ctl-tit-bot">
+                            <div class="ctl-tit-lft">
+                                <div class="ctl-chk-lft">
+                                    <label for="drop-remove"></label> <input type="checkbox" onClick="addIssue(this)" data-issueID="${element.id}" id="drop-remove"/>
+                                </div>
+                                <div class="ctl-txt-rit">
+                                    <span>${element.key}</span>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="ctl-dur-rit">
+                                <div class="ctl-dur-hor">
+                                    <h3></h3>
+                                </div>
+                                <div class="ctl-dur-dat">
+                                    <span></span>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                       ${assignee}
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>`;
+            
+              }
+
 
             });
             document.getElementById('external-events-list').innerHTML = html
@@ -242,3 +235,6 @@ duration += `${hours} h ${minutes} m`
       })
     })
       }
+
+
+  
