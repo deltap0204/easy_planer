@@ -8842,6 +8842,7 @@ var FullCalendar = (function (exports) {
             var _a = this, props = _a.props, context = _a.context;
             var options = context.options;
             var seg = props.seg;
+
             var eventRange = seg.eventRange;
             var ui = eventRange.ui;
             var hookProps = {
@@ -8906,10 +8907,14 @@ var FullCalendar = (function (exports) {
         return StandardEvent;
     }(BaseComponent));
     function renderInnerContent(innerProps) {
+        console.log(innerProps,"Inner Props")
         return (createElement("div", { className: "fc-event-main-frame" },
-            innerProps.timeText && (createElement("div", { className: "fc-event-time" }, innerProps.timeText)),
+            innerProps.timeText && (createElement("div", { className: "fc-event-time" },
+             innerProps.timeText)),
             createElement("div", { className: "fc-event-title-container" },
-                createElement("div", { className: "fc-event-title fc-sticky" }, innerProps.event.title || createElement(Fragment, null, "\u00A0")))));
+                createElement("div", { className: "fc-event-title fc-sticky" },
+                 innerProps.event.title || createElement(Fragment, null, "\u00A0"))
+                 )));
     }
     function getSegAnchorAttrs(seg) {
         var url = seg.eventRange.def.url;

@@ -1,7 +1,5 @@
-
- let eventsArray = [
-
-]
+var totalMembers = '';
+ let eventsArray = []
 document.addEventListener('DOMContentLoaded', function() {
     ////
         /* initialize the external events
@@ -113,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     });
 
-
+  
 
     function getissues(callb){
         AP.context.getContext(function(response){
@@ -131,6 +129,36 @@ document.addEventListener('DOMContentLoaded', function() {
           startAt: 0,
           maxResults: 25,jql: "project ="+projectKey});
         AP.require('request', function(request){
+
+// /******************** */
+request({
+          url: `/rest/api/3/user/assignable/multiProjectSearch?projectKeys=${projectKey}`,
+          type: 'GET',
+          
+          contentType: 'application/json',
+          success: function(responseText){
+           let users = JSON.parse(responseText);
+          //  let userHTML = '';
+           displayName = ''
+           totalMembers=''
+           users.forEach(user=>{
+            totalMembers +=`<a href="#" class="w3-bar-item w3-button"  onClick="assignUser(this)" data-accountID="${user.accountId}">
+                            <div>
+                                <span class="ctl-usr-bck" id="${user.accountId}" title="${user.displayName}">
+                                  ${user.displayName.charAt(0)}${user.displayName.charAt(1)}
+                                </span>
+                              ${user.displayName.charAt(0)}${user.displayName.charAt(1)}
+                              </div>
+                            </a> `
+          })
+          //  document.getElementById('userHTML').innerHTML = userHTML
+          },
+          error: function(xhr, statusText, errorThrown){
+            console.log(arguments);
+          }
+        
+      });
+/****************** */
         request({
           url: '/rest/api/3/search',
           type: 'POST',
@@ -144,7 +172,9 @@ document.addEventListener('DOMContentLoaded', function() {
             let {issues} = response;
             let html = '';
             let eventsArray = [];
+            let count = 0;
             issues.forEach(element => {
+
               let assignee = '';
               if(element.fields.assignee){
                 assignee = ` <div class="ctl-usr-ovr">
@@ -152,11 +182,28 @@ document.addEventListener('DOMContentLoaded', function() {
                     <li><a href="#!"><span class="ctl-usr-bck" title="${element.fields.assignee.displayName}">${element.fields.assignee.displayName.charAt(0)}${element.fields.assignee.displayName.charAt(1)}</span></a></li>
                 </ul>
             </div>`
-              }
+              } else{
+                count = count+1;
+                assignee = ` <div class="ctl-usr-ovr">
+                                <ul class="ctl-flx-usr">
+                                    <li>
+                                      <a href="#!">
+                                        <div class="w3-dropdown-click">
+                                          <div onclick="myFunction(${count})" class="arrow-down"></div>
+                                          <div id="Demo${count}" class="w3-dropdown-content w3-bar-block w3-hide w3-border">
+                                         ${totalMembers}
+                                          </div>
+                                        </div>
+                                     </a>
+                                  </li>
+                                </ul>
+                            </div>`
+                          }
 
               let e = "";
               let de = "";
               let duration = "";
+             
               if(element.fields.customfield_10033){
                 let end = '';
                 if(element.fields.customfield_10034){
@@ -175,8 +222,9 @@ seconds = seconds-(days*24*60*60)-(hours*60*60)-(minutes*60);
 duration += `${hours} h ${minutes} m`
 
                   }
-                eventsArray.push({title:element.fields.summary, start:element.fields.customfield_10033,end:end,key:element.id})
-
+                  console.log(element.fields.displayName,'Display Name')
+                eventsArray.push({title:element.fields.summary, start:element.fields.customfield_10033,end:end,key:element.id,assignee:element.fields.displayName})
+                  console.log(eventsArray,'Events Array')
                 d = new Date(element.fields.customfield_10033);
                 e += `${d.getDate()}-${d.getMonth()}-${d.getFullYear()}`;
 
@@ -215,6 +263,7 @@ duration += `${hours} h ${minutes} m`
                             </div>
                             <div class="clearfix"></div>
                         </div>
+                        
                        ${assignee}
                         <div class="clearfix"></div>
                     </div>
@@ -236,5 +285,132 @@ duration += `${hours} h ${minutes} m`
     })
       }
 
+      function getInputValue(){
+        // Selecting the input element and get its value 
+        var inputVal = document.getElementById("search").value;
+        if(inputVal ===''){
+          getissues()
+        }else{
+          getSearchedIssue(inputVal)
+        }
+        
+    }
 
-  
+    function getSearchedIssue(value){
+      AP.context.getContext(function(response){
+        projectKey = response.jira.project.key;
+        who = 'OTM'
+        var myQuery = 'project = WT';
+        if (!who || typeof who == 'undefined') {
+            console.log("No customer defined yet.  Not allowing anything!");
+            myQuery += ' and customer ~ \'' + randomstring.generate(); + '\'';
+        } else
+            if (who != 'OTM') {
+                myQuery += ' and customer ~ \'' + who + '\'';
+      }
+        var raw = JSON.stringify({fields:['summary', 'attachment', 'status', 'resolutiondate','assignee', 'customfield_10033','customfield_10079', 'customfield_10060', 'customfield_10061', 'customfield_10062', 'customfield_10063', 'customfield_10065', 'customfield_10056', 'customfield_10057','customfield_10059','customfield_10175','customfield_10178','customfield_10179','customfield_10180','customfield_10181','customfield_10182',',customfield_10058','customfield_10034'],
+        startAt: 0,
+        maxResults: 25,jql: "project ="+projectKey});
+      AP.require('request', function(request){
+    request({
+      url: '/rest/api/3/search',
+      type: 'POST',
+      data: raw,
+      contentType: 'application/json',
+      success: function(responseText){
+        issuesToAssign = []
+        response = JSON.parse(responseText)
+        let {issues} = response;
+        let html = '';
+        let eventsArray = [];
+        let count = 0;
+        issues.forEach(element => {
+
+          let assignee = '';
+          let assigneeNew ={
+            value:''
+          }
+            if(element.fields.summary === value){
+              settingDiv(assigneeNew,element,count)
+              assignee = assigneeNew.value
+            }else{
+            return
+          }
+          let e = "";  
+          if(e==""){
+
+            html = `${html}<div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event" data-key="${element.id}">
+            <div class="fc-event-main">
+                <div class="ctl-com-blo">
+                    <div class="ctl-des-top">
+                        <p>${element.fields.summary}</p>
+                    </div>
+                    <div class="ctl-tit-bot">
+                        <div class="ctl-tit-lft">
+                            <div class="ctl-chk-lft">
+                                <label for="drop-remove"></label> <input type="checkbox" onClick="addIssue(this)" data-issueID="${element.id}" id="drop-remove"/>
+                            </div>
+                            <div class="ctl-txt-rit">
+                                <span>${element.key}</span>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="ctl-dur-rit">
+                            <div class="ctl-dur-hor">
+                                <h3></h3>
+                            </div>
+                            <div class="ctl-dur-dat">
+                                <span></span>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    
+                   ${assignee}
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>`;
+        
+          }
+
+
+        });
+        document.getElementById('external-events-list').innerHTML = html
+        callb(eventsArray)
+      },
+      error: function(xhr, statusText, errorThrown){
+        console.log(arguments);
+      }
+    });
+  })
+})
+  }
+
+  function settingDiv(assignees,element,count){
+    if(element.fields.assignee){
+    assignees.value = ` <div class="ctl-usr-ovr">
+    <ul class="ctl-flx-usr">
+        <li><a href="#!"><span class="ctl-usr-bck" title="${element.fields.assignee.displayName}">${element.fields.assignee.displayName.charAt(0)}${element.fields.assignee.displayName.charAt(1)}</span></a></li>
+    </ul>
+</div>`
+  } else{
+    count = count+1;
+    assignees.value = ` <div class="ctl-usr-ovr">
+                    <ul class="ctl-flx-usr">
+                        <li>
+                          <a href="#!">
+                            <div class="w3-dropdown-click">
+                              <div onclick="myFunction(${count})" class="arrow-down"></div>
+                              <div id="Demo${count}" class="w3-dropdown-content w3-bar-block w3-hide w3-border">
+                             ${totalMembers}
+                              </div>
+                            </div>
+                         </a>
+                      </li>
+                    </ul>
+                </div>`
+              }
+              
+  }

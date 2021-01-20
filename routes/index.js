@@ -57,11 +57,8 @@ async function filter(who, cutomFilter) {
     };
 
     return new Promise(function (resolve, reject) {
-        console.log(options);
         request(options, function (error, res, body) {
             if (!error && res.statusCode == 200) {
-                // console.log(res);
-                // console.log(body);
 
                 var template = {
                     "startAt": "{{startAt}}",

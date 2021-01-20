@@ -1,6 +1,8 @@
 
 
     var issuesToAssign = [];
+    var selectedAccountId;
+    var totalMembers='';
    
     // var myHeaders = new Headers();
     // myHeaders.append("Authorization", "Basic ZnJhbmtAZnJpY3QuYmU6RXBKc0xxU1dlMG5KRnBuenduMHIwM0Iw");
@@ -53,9 +55,21 @@
           success: function(responseText){
            let users = JSON.parse(responseText);
            let userHTML = '';
+           totalMembers=''
+           console.log(users,'Users')
            users.forEach(user=>{
-            userHTML += `<li><a href="javascript:void(0)" onClick="assignUser(this)" data-accountID = "${user.accountId}"><span class="ctl-usr-bck" title="${user.displayName}">${user.displayName.charAt(0)}${user.displayName.charAt(1)}</span></a></li>`
-           })
+            userHTML += `<li><a href="javascript:void(0)" onClick="assignUser(this)"  data-accountID = "${user.accountId}"><span class="ctl-usr-bck" id="${user.accountId}" title="${user.displayName}">${user.displayName.charAt(0)}${user.displayName.charAt(1)}</span></a></li>`
+            totalMembers +=`<a href="#" class="w3-bar-item w3-button"  onClick="assignUser(this)" data-accountID="${user.accountId}">
+                            <div>
+                              
+                                <span class="ctl-usr-bck" id="${user.accountId}" title="${user.displayName}">
+                                  ${user.displayName.charAt(0)}${user.displayName.charAt(1)}
+                                </span>
+                              
+                              ${user.displayName.charAt(0)}${user.displayName.charAt(1)}
+                              </div>
+                            </a> `
+          })
            document.getElementById('userHTML').innerHTML = userHTML
           },
           error: function(xhr, statusText, errorThrown){
@@ -97,6 +111,7 @@
             response = JSON.parse(responseText)
             let {issues} = response;
             let html = '';
+            let count = 0;
             issues.forEach(element => {
               let assignee = '';
               let assigneeAccountId = "";
@@ -107,7 +122,26 @@
                 <li><a href="#!"><span class="ctl-usr-bck" title="${element.fields.assignee.displayName}">${element.fields.assignee.displayName.charAt(0)}${element.fields.assignee.displayName.charAt(1)}</span></a></li>
                 </ul>
             </div>`
-              }
+              }else{
+                count = count+1;
+                assignee = ` <div class="ctl-usr-ovr">
+                                <ul class="ctl-flx-usr">
+                                    <li>
+                                      <a href="#!">
+                                        <div class="w3-dropdown-click">
+                                          <div onclick="myFunction(${count})" class="arrow-down"></div>
+                                          <div id="Demo${count}" class="w3-dropdown-content w3-bar-block w3-hide w3-border">
+                                         ${totalMembers}
+                                          </div>
+                                        </div>
+                                     </a>
+                                  </li>
+                                </ul>
+                            </div>`
+                          }
+                if(accountId && ( !element.fields.assignee || accountId !== element.fields.assignee.accountId)){
+                  return;
+                }
               let e = "";
               let de = "";
               let duration = "";
@@ -142,9 +176,9 @@ duration += `${hours} h ${minutes} m`
                
 if(e==""){
 
-  html = `${html}<div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event" data-key="${element.id}" data-assignee="${assigneeAccountId}">
+  html = `${html}<div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event"  data-key="${element.id}" data-assignee="${assigneeAccountId}">
   <div class="fc-event-main">
-      <div class="ctl-com-blo">
+      <div class="ctl-com-blo" >
           <div class="ctl-des-top">
               <p>${element.fields.summary}</p>
           </div>
@@ -158,15 +192,7 @@ if(e==""){
                   </div>
                   <div class="clearfix"></div>
               </div>
-              <div class="ctl-dur-rit">
-                  <div class="ctl-dur-hor">
-                      <h3>Duration: ${duration}</h3>
-                  </div>
-                  <div class="ctl-dur-dat">
-                      <span>Start: ${e}</span>
-                  </div>
-                  <div class="clearfix"></div>
-              </div>
+             
               <div class="clearfix"></div>
           </div>
          ${assignee}
@@ -183,16 +209,33 @@ if(e==""){
             console.log(arguments);
           }
         });
-      });
-
-
-
-    
-
-
-    
+      });    
   });
-    
+
+  var previousIdOfDemo;
+    function myFunction(id) {
+  if(previousIdOfDemo || previousIdOfDemo === id){
+    let previous = document.getElementById("Demo"+previousIdOfDemo);
+    if(previous){
+      previous.className += " w3-hide";
+      previous.className = previous.className.replace(" w3-show", "");
+    }
+  }
+  if(previousIdOfDemo === id){
+    previousIdOfDemo = undefined;
+    return;
+  }
+  var x = document.getElementById("Demo"+id);
+  previousIdOfDemo= id;
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+    x.className = x.className.replace(" w3-hide", "");
+  } else { 
+    x.className += " w3-hide";
+    x.className = x.className.replace(" w3-show", "");
+  }
+  
+}
   function addIssue(element){
     let issueID = element.getAttribute('data-issueID')
     if(element.checked){
@@ -204,16 +247,26 @@ if(e==""){
         issuesToAssign.splice(index, 1);
       }
     }
-    console.log(issuesToAssign)
     
   }
 
-
+var previousColorId;
   function assignUser(element){
     let accountID = element.getAttribute('data-accountID');
+    document.getElementById(accountID).style.zIndex ="2"
+    if(previousColorId === accountID){
+      document.getElementById(previousColorId).style.border ="none"
+      previousColorId =null
+    }else{
+      if(previousColorId){
+        document.getElementById(previousColorId).style.border ="none"
+      }
+      document.getElementById(accountID).style.border ="2px solid #F5F3CE"
+      previousColorId =accountID
+    }
     if(issuesToAssign.length>0){
+      
       AP.context.getToken(function(token){
-        console.log("JWT token string", token);
       
       AP.require('request', function(request){
       issuesToAssign.forEach(issue=>{
@@ -238,13 +291,21 @@ if(e==""){
   });
     }
     else{
-      alert('No issue selected')
+      
+      if(selectedAccountId && selectedAccountId === accountID){
+        selectedAccountId = null;
+        getissues();
+      } else {
+        selectedAccountId = accountID;
+        getissues(accountID);
+      }
+      myFunction(previousIdOfDemo);
     }
 
   }
 
 
-  function getissues(){
+  function getissues(accountId){
     AP.context.getContext(function(response){
       projectKey = response.jira.project.key;
       who = 'OTM'
@@ -271,7 +332,9 @@ if(e==""){
         response = JSON.parse(responseText)
         let {issues} = response;
         let html = '';
+        let count = 0;
         issues.forEach(element => {
+          
           let assignee = '';
           if(element.fields.assignee){
             assignee = ` <div class="ctl-usr-ovr">
@@ -279,6 +342,25 @@ if(e==""){
                 <li><a href="#!"><span class="ctl-usr-bck" title="${element.fields.assignee.displayName}">${element.fields.assignee.displayName.charAt(0)}${element.fields.assignee.displayName.charAt(1)}</span></a></li>
             </ul>
         </div>`
+          } else{
+            count = count+1;
+            assignee = ` <div class="ctl-usr-ovr">
+                            <ul class="ctl-flx-usr">
+                                <li>
+                                  <a href="#!">
+                                    <div class="w3-dropdown-click">
+                                      <div onclick="myFunction(${count})" class="arrow-down"></div>
+                                      <div id="Demo${count}" class="w3-dropdown-content w3-bar-block w3-hide w3-border">
+                                     ${totalMembers}
+                                      </div>
+                                    </div>
+                                 </a>
+                              </li>
+                            </ul>
+                        </div>`
+                      }
+          if(accountId && ( !element.fields.assignee || accountId !== element.fields.assignee.accountId)){
+            return;
           }
 
           let e = "";
@@ -289,9 +371,9 @@ if(e==""){
 
               if(e==''){
 
-                html = `${html}<div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event" data-key="${element.id}">
+                html = `${html}<div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event" style="margin-bottom:20px"  data-key="${element.id}">
                 <div class="fc-event-main">
-                    <div class="ctl-com-blo">
+                    <div class="ctl-com-blo" >
                         <div class="ctl-des-top">
                             <p>${element.fields.summary}</p>
                         </div>
