@@ -212,19 +212,17 @@ request({
                     const date1 = new Date(element.fields.customfield_10033);
                     const date2 = new Date(element.fields.customfield_10034);
                     var seconds = Math.floor((date2 - (date1))/1000);
-var minutes = Math.floor(seconds/60);
-var hours = Math.floor(minutes/60);
-var days = Math.floor(hours/24);
+                    var minutes = Math.floor(seconds/60);
+                    var hours = Math.floor(minutes/60);
+                    var days = Math.floor(hours/24);
 
-hours = hours-(days*24);
-minutes = minutes-(days*24*60)-(hours*60);
-seconds = seconds-(days*24*60*60)-(hours*60*60)-(minutes*60);
-duration += `${hours} h ${minutes} m`
+                    hours = hours-(days*24);
+                    minutes = minutes-(days*24*60)-(hours*60);
+                    seconds = seconds-(days*24*60*60)-(hours*60*60)-(minutes*60);
+                    duration += `${hours} h ${minutes} m`
 
                   }
-                  console.log(element.fields.displayName,'Display Name')
-                eventsArray.push({title:element.fields.summary, start:element.fields.customfield_10033,end:end,key:element.id,assignee:element.fields.displayName})
-                  console.log(eventsArray,'Events Array')
+                eventsArray.push({title:element.fields.summary,status:element.fields.status.statusCategory.name,keyToDislay:element.key, start:element.fields.customfield_10033,end:end,key:element.id,assignee:element.fields.assignee.displayName})
                 d = new Date(element.fields.customfield_10033);
                 e += `${d.getDate()}-${d.getMonth()}-${d.getFullYear()}`;
 

@@ -56,7 +56,6 @@
            let users = JSON.parse(responseText);
            let userHTML = '';
            totalMembers=''
-           console.log(users,'Users')
            users.forEach(user=>{
             userHTML += `<li><a href="javascript:void(0)" onClick="assignUser(this)"  data-accountID = "${user.accountId}"><span class="ctl-usr-bck" id="${user.accountId}" title="${user.displayName}">${user.displayName.charAt(0)}${user.displayName.charAt(1)}</span></a></li>`
             totalMembers +=`<a href="#" class="w3-bar-item w3-button"  onClick="assignUser(this)" data-accountID="${user.accountId}">

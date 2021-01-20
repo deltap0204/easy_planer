@@ -8907,15 +8907,33 @@ var FullCalendar = (function (exports) {
         return StandardEvent;
     }(BaseComponent));
     function renderInnerContent(innerProps) {
-        console.log(innerProps,"Inner Props")
-        return (createElement("div", { className: "fc-event-main-frame" },
-            innerProps.timeText && (createElement("div", { className: "fc-event-time" },
-             innerProps.timeText)),
-            createElement("div", { className: "fc-event-title-container" },
-                createElement("div", { className: "fc-event-title fc-sticky" },
-                 innerProps.event.title || createElement(Fragment, null, "\u00A0"))
-                 )));
+        var status=["To Do","In Progress","Problem","Done"]
+        var colors=["red","orange","blue","green"]
+        for(var i=0;i<status.length;i++){
+            if(innerProps.event._def.extendedProps.status+"" === status[i]){
+                return (
+            
+                    createElement("div", { className: "fc-event-main-frames" ,style:"overflow:hidden"},
+                    createElement("div", { className: "fc-event-title fc-stickys",style:"margin-bottom:10px;" },
+                         innerProps.event._def.extendedProps.keyToDislay ),
+                    createElement("div", { className: "fc-event-title-containers" },
+                        
+                    innerProps.timeText && (createElement("div", { className: "fc-event-time",style:"margin-bottom:10px;"},
+                    innerProps.timeText)),
+                         ),
+                         createElement("div", { className: "fc-event-title-containers" },
+                        createElement("div", { className: "fc-event-title fc-stickys", style:"margin-bottom:10px;text-decoration: underline;color:"+colors[i]},
+                         innerProps.event._def.extendedProps.status)
+                         ),
+                         createElement("div", { className: "fc-event-title-containers" },
+                        createElement("div", { className: "fc-event-title fc-stickys" ,style:"margin-bottom:10px;" },
+                         innerProps.event._def.extendedProps.assignee)
+                         )
+                         ))
+            }
+        }
     }
+    // || createElement(Fragment, null, "\u00A0")
     function getSegAnchorAttrs(seg) {
         var url = seg.eventRange.def.url;
         return url ? { href: url } : {};

@@ -1279,6 +1279,7 @@ A VERTICAL event
 }
 .fc-timegrid-event .fc-event-main {
     padding: 1px 1px 0;
+    overflow:hidden;
 }
 .fc-timegrid-event .fc-event-time {
     white-space: nowrap;
@@ -1505,6 +1506,7 @@ A VERTICAL event
 #external-events .fc-event {
     margin-bottom: 15px;
     cursor: move;
+    height:85px;
 }
 
 #external-events p input {
