@@ -142,7 +142,7 @@ request({
            displayName = ''
            totalMembers=''
            users.forEach(user=>{
-            totalMembers +=`<a href="#" class="w3-bar-item w3-button"  onClick="assignUser(this)" data-accountID="${user.accountId}">
+            totalMembers +=`<a href="#" class="w3-bar-item w3-button"  onClick="assignUser(this,true)" data-accountID="${user.accountId}">
                             <div>
                                 <span class="ctl-usr-bck" id="${user.accountId}" title="${user.displayName}">
                                   ${user.displayName.charAt(0)}${user.displayName.charAt(1)}
@@ -171,25 +171,36 @@ request({
             response = JSON.parse(responseText)
             let {issues} = response;
             let html = '';
-            let eventsArray = [];
             let count = 0;
             issues.forEach(element => {
 
               let assignee = '';
+              count = count+1;
               if(element.fields.assignee){
-                assignee = ` <div class="ctl-usr-ovr">
-                <ul class="ctl-flx-usr">
-                    <li><a href="#!"><span class="ctl-usr-bck" title="${element.fields.assignee.displayName}">${element.fields.assignee.displayName.charAt(0)}${element.fields.assignee.displayName.charAt(1)}</span></a></li>
-                </ul>
-            </div>`
+            assignee = ` <div class="ctl-usr-ovr">
+            <ul class="ctl-flx-usr">
+                <li>
+                  <a href="#!">
+                    <div class="w3-dropdown-click">
+                      <ul class="ctl-flx-usr" onclick="myFunction(${count},${element.id})">
+                     <li><a href="#!"><span class="ctl-usr-bck" title="${element.fields.assignee.displayName}">${element.fields.assignee.displayName.charAt(0)}${element.fields.assignee.displayName.charAt(1)}</span></a></li>
+                 </ul>
+                      <div id="Demo${count}" class="w3-dropdown-content w3-bar-block w3-hide w3-border" >
+                     ${totalMembers}
+                      </div>
+                    </div>
+                 </a>
+              </li>
+            </ul>
+        </div>`           
               } else{
-                count = count+1;
+                
                 assignee = ` <div class="ctl-usr-ovr">
                                 <ul class="ctl-flx-usr">
                                     <li>
                                       <a href="#!">
                                         <div class="w3-dropdown-click">
-                                          <div onclick="myFunction(${count})" class="arrow-down"></div>
+                                          <div onclick="myFunction(${count},${element.id})" class="arrow-down"></div>
                                           <div id="Demo${count}" class="w3-dropdown-content w3-bar-block w3-hide w3-border">
                                          ${totalMembers}
                                           </div>
@@ -282,14 +293,14 @@ request({
       })
     })
       }
+      
 
-      function getInputValue(){
-        // Selecting the input element and get its value 
+      function getInputValue(value){
         var inputVal = document.getElementById("search").value;
         if(inputVal ===''){
           getissues()
         }else{
-          getSearchedIssue(inputVal)
+          getSearchedIssue(value)
         }
         
     }
@@ -323,12 +334,12 @@ request({
         let eventsArray = [];
         let count = 0;
         issues.forEach(element => {
-
+          console.log(element,'element')   
           let assignee = '';
           let assigneeNew ={
             value:''
           }
-            if(element.fields.summary === value){
+          if(element.fields.summary.toLowerCase().indexOf(value.toLowerCase()) !== -1){
               settingDiv(assigneeNew,element,count)
               assignee = assigneeNew.value
             }else{
@@ -387,20 +398,32 @@ request({
   }
 
   function settingDiv(assignees,element,count){
+    count = count+1;
     if(element.fields.assignee){
-    assignees.value = ` <div class="ctl-usr-ovr">
+    assignees.value =` <div class="ctl-usr-ovr">
     <ul class="ctl-flx-usr">
-        <li><a href="#!"><span class="ctl-usr-bck" title="${element.fields.assignee.displayName}">${element.fields.assignee.displayName.charAt(0)}${element.fields.assignee.displayName.charAt(1)}</span></a></li>
+        <li>
+          <a href="#!">
+            <div class="w3-dropdown-click">
+              <ul class="ctl-flx-usr" onclick="myFunction(${count},${element.id})">
+             <li><a href="#!"><span class="ctl-usr-bck" title="${element.fields.assignee.displayName}">${element.fields.assignee.displayName.charAt(0)}${element.fields.assignee.displayName.charAt(1)}</span></a></li>
+         </ul>
+              <div id="Demo${count}" class="w3-dropdown-content w3-bar-block w3-hide w3-border" >
+             ${totalMembers}
+              </div>
+            </div>
+         </a>
+      </li>
     </ul>
 </div>`
+
   } else{
-    count = count+1;
     assignees.value = ` <div class="ctl-usr-ovr">
                     <ul class="ctl-flx-usr">
                         <li>
                           <a href="#!">
                             <div class="w3-dropdown-click">
-                              <div onclick="myFunction(${count})" class="arrow-down"></div>
+                              <div onclick="myFunction(${count},${element.id})" class="arrow-down"></div>
                               <div id="Demo${count}" class="w3-dropdown-content w3-bar-block w3-hide w3-border">
                              ${totalMembers}
                               </div>
@@ -412,3 +435,5 @@ request({
               }
               
   }
+
+  

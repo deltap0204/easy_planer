@@ -42,11 +42,11 @@
                             <div class="ctl-ser-pos">
                                 <div class="ctl-sub-box">
                                     <label for="search"></label>
-                                    <input type="text" id="search" class="ctl-inp-box">
+                                    <input type="text" id="search" oninput="getInputValue(this.value);" class="ctl-inp-box">
                                 </div>
                                 <div class="ctl-ser-ico">
                                     <div class="ctl-ico-bot">
-                                        <i class="fa fa-search" onclick="getInputValue();" aria-hidden="true"></i>
+                                        <i class="fa fa-search" onClick="getInputValue(this.value);" aria-hidden="true"></i>
                                     </div>
                                 </div>
                                 <div class="clearfix"></div>

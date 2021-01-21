@@ -8884,6 +8884,7 @@ var FullCalendar = (function (exports) {
     }(BaseComponent));
 
     // should not be a purecomponent
+    
     var StandardEvent = /** @class */ (function (_super) {
         __extends(StandardEvent, _super);
         function StandardEvent() {

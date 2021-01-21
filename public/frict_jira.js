@@ -3,6 +3,7 @@
     var issuesToAssign = [];
     var selectedAccountId;
     var totalMembers='';
+    var selectedIssueId;
    
     // var myHeaders = new Headers();
     // myHeaders.append("Authorization", "Basic ZnJhbmtAZnJpY3QuYmU6RXBKc0xxU1dlMG5KRnBuenduMHIwM0Iw");
@@ -58,7 +59,7 @@
            totalMembers=''
            users.forEach(user=>{
             userHTML += `<li><a href="javascript:void(0)" onClick="assignUser(this)"  data-accountID = "${user.accountId}"><span class="ctl-usr-bck" id="${user.accountId}" title="${user.displayName}">${user.displayName.charAt(0)}${user.displayName.charAt(1)}</span></a></li>`
-            totalMembers +=`<a href="#" class="w3-bar-item w3-button"  onClick="assignUser(this)" data-accountID="${user.accountId}">
+            totalMembers +=`<a href="#" class="w3-bar-item w3-button"  onClick="assignUser(this, true)" data-accountID="${user.accountId}">
                             <div>
                               
                                 <span class="ctl-usr-bck" id="${user.accountId}" title="${user.displayName}">
@@ -114,21 +115,34 @@
             issues.forEach(element => {
               let assignee = '';
               let assigneeAccountId = "";
+
+              count = count+1;
               if(element.fields.assignee){
                 assigneeAccountId = element.fields.assignee.accountId;
-                assignee = ` <div class="ctl-usr-ovr">
-                <ul class="ctl-flx-usr">
-                <li><a href="#!"><span class="ctl-usr-bck" title="${element.fields.assignee.displayName}">${element.fields.assignee.displayName.charAt(0)}${element.fields.assignee.displayName.charAt(1)}</span></a></li>
-                </ul>
-            </div>`
+            
+            assignee = `<div class="ctl-usr-ovr">
+            <ul class="ctl-flx-usr">
+                <li>
+                  <a href="#!">
+                    <div class="w3-dropdown-click">
+                      <ul class="ctl-flx-usr" onclick="myFunction(${count},${element.id})">
+                     <li><a href="#!"><span class="ctl-usr-bck" title="${element.fields.assignee.displayName}">${element.fields.assignee.displayName.charAt(0)}${element.fields.assignee.displayName.charAt(1)}</span></a></li>
+                 </ul>
+                      <div id="Demo${count}" class="w3-dropdown-content w3-bar-block w3-hide w3-border" >
+                     ${totalMembers}
+                      </div>
+                    </div>
+                 </a>
+              </li>
+            </ul>
+        </div>`
               }else{
-                count = count+1;
                 assignee = ` <div class="ctl-usr-ovr">
                                 <ul class="ctl-flx-usr">
                                     <li>
                                       <a href="#!">
                                         <div class="w3-dropdown-click">
-                                          <div onclick="myFunction(${count})" class="arrow-down"></div>
+                                          <div onclick="myFunction(${count},${element.id})" class="arrow-down"></div>
                                           <div id="Demo${count}" class="w3-dropdown-content w3-bar-block w3-hide w3-border">
                                          ${totalMembers}
                                           </div>
@@ -212,7 +226,8 @@ if(e==""){
   });
 
   var previousIdOfDemo;
-    function myFunction(id) {
+    function myFunction(id,issueId) {
+      selectedIssueId =issueId;
   if(previousIdOfDemo || previousIdOfDemo === id){
     let previous = document.getElementById("Demo"+previousIdOfDemo);
     if(previous){
@@ -250,26 +265,31 @@ if(e==""){
   }
 
 var previousColorId;
-  function assignUser(element){
+  function assignUser(element, isDropDownClick){
+    var tmpIssuesToAssign = [];
     let accountID = element.getAttribute('data-accountID');
-    document.getElementById(accountID).style.zIndex ="2"
-    if(previousColorId === accountID){
-      document.getElementById(previousColorId).style.border ="none"
-      previousColorId =null
-    }else{
-      if(previousColorId){
+    if(isDropDownClick){
+        tmpIssuesToAssign.push(selectedIssueId);
+        selectedIssueId = undefined;
+    } else {
+      
+      document.getElementById(accountID).style.zIndex ="2"
+      if(previousColorId === accountID){
         document.getElementById(previousColorId).style.border ="none"
+        previousColorId =null
+      }else{
+        if(previousColorId){
+          document.getElementById(previousColorId).style.border ="none"
+        }
+        document.getElementById(accountID).style.border ="2px solid #F5F3CE"
+        previousColorId =accountID
       }
-      document.getElementById(accountID).style.border ="2px solid #F5F3CE"
-      previousColorId =accountID
+      tmpIssuesToAssign = issuesToAssign;
     }
-    if(issuesToAssign.length>0){
-      
+    if(tmpIssuesToAssign.length>0){
       AP.context.getToken(function(token){
-      
       AP.require('request', function(request){
-      issuesToAssign.forEach(issue=>{
-
+        tmpIssuesToAssign.forEach(issue=>{
         request({
           url: `/rest/api/3/issue/${issue}/assignee`,
           type: 'PUT',
@@ -279,6 +299,12 @@ var previousColorId;
           contentType: 'application/json',
           success: function(responseText){
             getissues()
+            let previous = document.getElementById("Demo"+previousIdOfDemo);
+            if(previous){
+              previous.className += " w3-hide";
+              previous.className = previous.className.replace(" w3-show", "");
+              previousIdOfDemo = undefined
+            }
             
           },
           error: function(xhr, statusText, errorThrown){
@@ -333,22 +359,33 @@ var previousColorId;
         let html = '';
         let count = 0;
         issues.forEach(element => {
-          
           let assignee = '';
+          count = count+1;
           if(element.fields.assignee){
-            assignee = ` <div class="ctl-usr-ovr">
-            <ul class="ctl-flx-usr">
-                <li><a href="#!"><span class="ctl-usr-bck" title="${element.fields.assignee.displayName}">${element.fields.assignee.displayName.charAt(0)}${element.fields.assignee.displayName.charAt(1)}</span></a></li>
-            </ul>
-        </div>`
+        assignee = `<div class="ctl-usr-ovr">
+        <ul class="ctl-flx-usr">
+            <li>
+              <a href="#!">
+                <div class="w3-dropdown-click">
+                  <ul class="ctl-flx-usr" onclick="myFunction(${count},${element.id})">
+                 <li><a href="#!"><span class="ctl-usr-bck" title="${element.fields.assignee.displayName}">${element.fields.assignee.displayName.charAt(0)}${element.fields.assignee.displayName.charAt(1)}</span></a></li>
+             </ul>
+                  <div id="Demo${count}" class="w3-dropdown-content w3-bar-block w3-hide w3-border" >
+                 ${totalMembers}
+                  </div>
+                </div>
+             </a>
+          </li>
+        </ul>
+    </div>`
           } else{
-            count = count+1;
+            
             assignee = ` <div class="ctl-usr-ovr">
                             <ul class="ctl-flx-usr">
                                 <li>
                                   <a href="#!">
                                     <div class="w3-dropdown-click">
-                                      <div onclick="myFunction(${count})" class="arrow-down"></div>
+                                      <div onclick="myFunction(${count},${element.id})" class="arrow-down"></div>
                                       <div id="Demo${count}" class="w3-dropdown-content w3-bar-block w3-hide w3-border">
                                      ${totalMembers}
                                       </div>
@@ -358,6 +395,7 @@ var previousColorId;
                             </ul>
                         </div>`
                       }
+                      
           if(accountId && ( !element.fields.assignee || accountId !== element.fields.assignee.accountId)){
             return;
           }
