@@ -33,6 +33,11 @@ document.addEventListener('DOMContentLoaded', function() {
         -----------------------------------------------------------------*/
     
         var calendarEl = document.getElementById('calendar');
+        Date.prototype.addHours = function(h) {
+          this.setTime(this.getTime() + (h*60*60*1000));
+          return this;
+        }
+        
         var calendar = new FullCalendar.Calendar(calendarEl, {
             headerToolbar: {
                 left: 'prev,next today',
@@ -41,6 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             defaultView: 'timeGridWeek',
             initialView:"timeGridWeek",
+            timeZone: 'UTC+1',
             editable: true,
             droppable: true, // this allows things to be dropped onto the calendar
             eventDurationEditable:true,
@@ -80,10 +86,12 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             eventResize:function(info){
                 let issueKey = info.event._def.extendedProps.key;
+                var eventDate = new Date(info.event.end.getTime());
+                eventDate.addHours(-1);
                 let json = JSON.stringify({
                
                     "fields": {
-                        "customfield_10034": info.event.end.toISOString()
+                        "customfield_10034": eventDate
                       
                     }
                   })
@@ -94,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             data:json,
                             contentType: 'application/json',
                             success: function(responseText){
-                            getissues()
+                              getissues()
                             },
                             error: function(xhr, statusText, errorThrown){
                               console.log(arguments);
@@ -129,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
           startAt: 0,
           maxResults: 25,jql: "project ="+projectKey});
         AP.require('request', function(request){
-
+          
 // /******************** */
 request({
           url: `/rest/api/3/user/assignable/multiProjectSearch?projectKeys=${projectKey}`,
@@ -306,6 +314,7 @@ request({
     }
 
     function getSearchedIssue(value){
+      calendar.eventSearch
       AP.context.getContext(function(response){
         projectKey = response.jira.project.key;
         who = 'OTM'
@@ -333,8 +342,7 @@ request({
         let html = '';
         let eventsArray = [];
         let count = 0;
-        issues.forEach(element => {
-          console.log(element,'element')   
+        issues.forEach(element => {  
           let assignee = '';
           let assigneeNew ={
             value:''
