@@ -1,11 +1,19 @@
 var totalMembers = '';
  let eventsArray = []
+ var containerEl;
+ var issuesToAssign = [];
+ var selectedAccountId;
+ var totalMembers='';
+ var selectedIssueId;
+ var calendar;
+ let eventsArrayFrictFrict = []
+   
 document.addEventListener('DOMContentLoaded', function() {
     ////
         /* initialize the external events
         -----------------------------------------------------------------*/
     
-        var containerEl = document.getElementById('external-events-list');
+         containerEl = document.getElementById('external-events-list');
         new FullCalendar.Draggable(containerEl, {
             itemSelector: '.fc-event',
             eventData: function(eventEl) {
@@ -32,96 +40,133 @@ document.addEventListener('DOMContentLoaded', function() {
         /* initialize the calendar
         -----------------------------------------------------------------*/
     
-        var calendarEl = document.getElementById('calendar');
-        Date.prototype.addHours = function(h) {
-          this.setTime(this.getTime() + (h*60*60*1000));
-          return this;
-        }
-        
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-            headerToolbar: {
-                left: 'prev,next today',
-                center: 'title',
-                right: ''
-            },
-            defaultView: 'timeGridWeek',
-            initialView:"timeGridWeek",
-            timeZone: 'UTC+1',
-            editable: true,
-            droppable: true, // this allows things to be dropped onto the calendar
-            eventDurationEditable:true,
-            drop: function(arg) {
-               //customfield_10033
-               var issueKey = arg.draggedEl.getAttribute('data-key'); 
-               let json = JSON.stringify({
-               
-                "fields": {
-                    "customfield_10033": arg.dateStr
-                  
-                }
-              })
-                AP.require('request', function(request){
-                    request({
-                        url: `/rest/api/3/issue/${issueKey}`,
-                        type: 'PUT',
-                        data:json,
-                        contentType: 'application/json',
-                        success: function(responseText){
-                        getissues()
-                        },
-                        error: function(xhr, statusText, errorThrown){
-                          console.log(arguments);
-                        }
-                      
-                    });
-              
-                })
-                    arg.draggedEl.parentNode.removeChild(arg.draggedEl);
-                    console.log(arg)
-               
-                
-            },
-            events:function(a,b,c,d){
-               getissues(b)
-            },
-            eventResize:function(info){
-                let issueKey = info.event._def.extendedProps.key;
-                var eventDate = new Date(info.event.end.getTime());
-                eventDate.addHours(-1);
-                let json = JSON.stringify({
-               
-                    "fields": {
-                        "customfield_10034": eventDate
-                      
-                    }
-                  })
-                    AP.require('request', function(request){
-                        request({
-                            url: `/rest/api/3/issue/${issueKey}`,
-                            type: 'PUT',
-                            data:json,
-                            contentType: 'application/json',
-                            success: function(responseText){
-                              getissues()
-                            },
-                            error: function(xhr, statusText, errorThrown){
-                              console.log(arguments);
-                            }
-                          
-                        });
-                  
-                    })
-                
-            },
-            
-        });
-        calendar.render();
+      
+      initializeCalendar();
     
     });
 
-  
+  function initializeCalendar(){
+    eventsArray=[];
+    var calendarEl = document.getElementById('calendar');
+    Date.prototype.addHours = function(h) {
+      this.setTime(this.getTime() + (h*60*60*1000));
+      return this;
+    }
+    calendar = new FullCalendar.Calendar(calendarEl, {
+      headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: ''
+      },
+      defaultView: 'timeGridWeek',
+      initialView:"timeGridWeek",
+      timeZone: 'UTC+1',
+      editable: true,
+      droppable: true, // this allows things to be dropped onto the calendar
+      eventDurationEditable:true,
+      eventDrop: function(info) {
+        let issueKey = info.event._def.extendedProps.key;
+          var eventDate = new Date(info.event.end.getTime());
+          var startDate = new Date(info.event.start.getTime())
+          eventDate.addHours(-1);
+          startDate.addHours(-1)
+          let json = JSON.stringify({
+         
+              "fields": {
+                  "customfield_10034": eventDate,
+                  "customfield_10033":startDate
+                
+              }
+            })
+              AP.require('request', function(request){
+                  request({
+                      url: `/rest/api/3/issue/${issueKey}`,
+                      type: 'PUT',
+                      data:json,
+                      contentType: 'application/json',
+                      success: function(responseText){
+                        getissues()
+                      },
+                      error: function(xhr, statusText, errorThrown){
+                        console.log(arguments);
+                      }
+                    
+                  });
+            
+              })
+        
+         
+     },
+      drop: function(arg) {
+         //customfield_10033
+         var issueKey = arg.draggedEl.getAttribute('data-key'); 
+         let json = JSON.stringify({
+         
+          "fields": {
+              "customfield_10033": arg.dateStr
+            
+          }
+        })
+          AP.require('request', function(request){
+              request({
+                  url: `/rest/api/3/issue/${issueKey}`,
+                  type: 'PUT',
+                  data:json,
+                  contentType: 'application/json',
+                  success: function(responseText){
+                  initializeCalendar()
+                  },
+                  error: function(xhr, statusText, errorThrown){
+                    console.log(arguments);
+                  }
+                
+              });
+        
+          })
+              arg.draggedEl.parentNode.removeChild(arg.draggedEl);
+              console.log(arg)
+         
+          
+      },
+      events:function(a,b,c,d){
+         getissues(b)
+      },
+      eventResize:function(info){
+          let issueKey = info.event._def.extendedProps.key;
+          var eventDate = new Date(info.event.end.getTime());
+          eventDate.addHours(-1);
+          let json = JSON.stringify({
+         
+              "fields": {
+                  "customfield_10034": eventDate
+                
+              }
+            })
+              AP.require('request', function(request){
+                  request({
+                      url: `/rest/api/3/issue/${issueKey}`,
+                      type: 'PUT',
+                      data:json,
+                      contentType: 'application/json',
+                      success: function(responseText){
+                        getissues()
+                      },
+                      error: function(xhr, statusText, errorThrown){
+                        console.log(arguments);
+                      }
+                    
+                  });
+            
+              })
+          
+      },
+      
+  });
+  calendar.render();
+  }
 
     function getissues(callb){
+      eventArray= []
         AP.context.getContext(function(response){
           projectKey = response.jira.project.key;
           who = 'OTM'
@@ -182,6 +227,9 @@ request({
             let count = 0;
             issues.forEach(element => {
 
+              if(selectedAccountId !== undefined && ( !element.fields.assignee || selectedAccountId !== element.fields.assignee.accountId)){
+                return;
+              }
               let assignee = '';
               count = count+1;
               if(element.fields.assignee){
@@ -222,7 +270,6 @@ request({
               let e = "";
               let de = "";
               let duration = "";
-             
               if(element.fields.customfield_10033){
                 let end = '';
                 if(element.fields.customfield_10034){
@@ -314,7 +361,6 @@ request({
     }
 
     function getSearchedIssue(value){
-      calendar.eventSearch
       AP.context.getContext(function(response){
         projectKey = response.jira.project.key;
         who = 'OTM'

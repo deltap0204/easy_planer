@@ -10328,6 +10328,7 @@ var FullCalendar = (function (exports) {
                     _this.dragSelection = null;
                 }
             };
+            console.log('Hereeee')
             var component = settings.component;
             var options = component.context.options;
             var dragging = _this.dragging = new FeaturefulElementDragging(settings.el);

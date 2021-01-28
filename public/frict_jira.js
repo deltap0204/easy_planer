@@ -1,9 +1,5 @@
 
 
-    var issuesToAssign = [];
-    var selectedAccountId;
-    var totalMembers='';
-    var selectedIssueId;
    
     // var myHeaders = new Headers();
     // myHeaders.append("Authorization", "Basic ZnJhbmtAZnJpY3QuYmU6RXBKc0xxU1dlMG5KRnBuenduMHIwM0Iw");
@@ -112,6 +108,7 @@
             let {issues} = response;
             let html = '';
             let count = 0;
+            eventsArrayFrict=[];
             issues.forEach(element => {
               let assignee = '';
               let assigneeAccountId = "";
@@ -152,7 +149,7 @@
                                 </ul>
                             </div>`
                           }
-                if(accountId && ( !element.fields.assignee || accountId !== element.fields.assignee.accountId)){
+                if(selectedAccountId !== undefined && ( !element.fields.assignee || selectedAccountId !== element.fields.assignee.accountId)){
                   return;
                 }
               let e = "";
@@ -166,17 +163,17 @@
                     const date1 = new Date(element.fields.customfield_10033);
                     const date2 = new Date(element.fields.customfield_10034);
                     var seconds = Math.floor((date2 - (date1))/1000);
-var minutes = Math.floor(seconds/60);
-var hours = Math.floor(minutes/60);
-var days = Math.floor(hours/24);
+                    var minutes = Math.floor(seconds/60);
+                    var hours = Math.floor(minutes/60);
+                    var days = Math.floor(hours/24);
 
-hours = hours-(days*24);
-minutes = minutes-(days*24*60)-(hours*60);
-seconds = seconds-(days*24*60*60)-(hours*60*60)-(minutes*60);
-duration += `${hours} h ${minutes} m`
+                    hours = hours-(days*24);
+                    minutes = minutes-(days*24*60)-(hours*60);
+                    seconds = seconds-(days*24*60*60)-(hours*60*60)-(minutes*60);
+                    duration += `${hours} h ${minutes} m`
 
                   }
-                eventsArray.push({title:element.fields.summary, start:element.fields.customfield_10033,end:end,key:element.id})
+                eventsArrayFrict.push({title:element.fields.summary, start:element.fields.customfield_10033,end:end,key:element.id})
 
                 d = new Date(element.fields.customfield_10033);
                 e += `${d.getDate()}-${d.getMonth()}-${d.getFullYear()}`;
@@ -298,7 +295,7 @@ var previousColorId;
           data: JSON.stringify({"accountId": accountID}),
           contentType: 'application/json',
           success: function(responseText){
-            getissues()
+            getissuesFrict()
             let previous = document.getElementById("Demo"+previousIdOfDemo);
             if(previous){
               previous.className += " w3-hide";
@@ -315,22 +312,24 @@ var previousColorId;
     })
   });
     }
-    else{
-      
+    else{     
+      calendar.destroy();
       if(selectedAccountId && selectedAccountId === accountID){
-        selectedAccountId = null;
-        getissues();
+        selectedAccountId = undefined;
+        getissuesFrict();
       } else {
         selectedAccountId = accountID;
-        getissues(accountID);
+        getissuesFrict(accountID);
       }
+    
+      initializeCalendar();
       myFunction(previousIdOfDemo);
     }
 
   }
 
 
-  function getissues(accountId){
+  function getissuesFrict(accountId){
     AP.context.getContext(function(response){
       projectKey = response.jira.project.key;
       who = 'OTM'
@@ -396,7 +395,7 @@ var previousColorId;
                         </div>`
                       }
                       
-          if(accountId && ( !element.fields.assignee || accountId !== element.fields.assignee.accountId)){
+          if(accountId !== undefined && ( !element.fields.assignee || accountId !== element.fields.assignee.accountId)){
             return;
           }
 
@@ -453,11 +452,3 @@ var previousColorId;
   })
 })
   }
-
-
-  
-
-
-
-
-
