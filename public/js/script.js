@@ -40,7 +40,6 @@ document.addEventListener('DOMContentLoaded', function() {
         /* initialize the calendar
         -----------------------------------------------------------------*/
     
-      
       initializeCalendar();
     
     });
@@ -166,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
     function getissues(callb){
-      eventArray= []
+      eventsArray= []
         AP.context.getContext(function(response){
           projectKey = response.jira.project.key;
           who = 'OTM'
