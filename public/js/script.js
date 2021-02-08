@@ -99,10 +99,15 @@ document.addEventListener('DOMContentLoaded', function() {
       drop: function(arg) {
          //customfield_10033
          var issueKey = arg.draggedEl.getAttribute('data-key'); 
+         let date = arg.dateStr
+         date = date.split('T')
+         let date1 = date[1].split(':')
+          let hour = date1[0]-1
+          let finalDate = date[0]+'T'+hour+':'+date1[1]+':'+date1[2]
          let json = JSON.stringify({
          
           "fields": {
-              "customfield_10033": arg.dateStr
+              "customfield_10033": finalDate
             
           }
         })

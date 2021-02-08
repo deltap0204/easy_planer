@@ -2,7 +2,7 @@
     "name": "Create Quality Issue Frict",
     "description": "Create an issue for Quality as it should be created",
     "key": "be.frict.createQualityIssue",
-    "baseUrl": "https://6c546ebe3b0b.ngrok.io",
+    "baseUrl": "https://303e84bfee6a.ngrok.io",
     "vendor": {
         "name": "FrICT",
         "url": "http://otmgroup.be"
